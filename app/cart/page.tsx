@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Cart } from '../../src/pages/Cart';
+import { Cart } from '../../src/views/Cart';
 import { useCart, useSelectedProduct } from '../providers';
 import { Product } from '../lib/types';
 

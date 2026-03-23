@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Marketplace } from '../../src/pages/Marketplace';
+import { Marketplace } from '../../src/views/Marketplace';
 import { useCart, useWishlist, useSelectedProduct } from '../providers';
 import { Product } from '../lib/types';
 

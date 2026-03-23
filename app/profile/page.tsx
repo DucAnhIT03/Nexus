@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Profile } from '../../src/pages/Profile';
+import { Profile } from '../../src/views/Profile';
 
 export default function ProfilePage() {
   const router = useRouter();

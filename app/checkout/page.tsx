@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Checkout } from '../../src/pages/Checkout';
+import { Checkout } from '../../src/views/Checkout';
 import { useCart } from '../providers';
 
 export default function CheckoutPage() {
