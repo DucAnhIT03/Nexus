@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusMarket – User Flow Diagram</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            padding: 40px 20px 20px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+        .header p {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* ===== LEGEND ===== */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding: 12px 20px 30px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+        }
+
+        /* ===== FLOW CANVAS ===== */
+        .flow-canvas {
+            position: relative;
+            width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0 60px;
+            min-height: 1400px;
+        }
+
+        /* ===== NODE ===== */
+        .node {
+            position: absolute;
+            border-radius: 16px;
+            padding: 16px 20px;
+            min-width: 170px;
+            text-align: center;
+            cursor: default;
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 2;
+        }
+        .node:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .node .icon {
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+        .node .title {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+        .node .subtitle {
+            font-size: 10px;
+            opacity: 0.7;
+            line-height: 1.4;
+        }
+
+        /* Node Types */
+        .node-entry {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border: 2px solid #475569;
+            color: #f1f5f9;
+        }
+        .node-auth {
+            background: linear-gradient(135deg, #312e81, #4338ca);
+            border: 2px solid #6366f1;
+            color: #e0e7ff;
+        }
+        .node-browse {
+            background: linear-gradient(135deg, #064e3b, #047857);
+            border: 2px solid #10b981;
+            color: #d1fae5;
+        }
+        .node-purchase {
+            background: linear-gradient(135deg, #78350f, #b45309);
+            border: 2px solid #f59e0b;
+            color: #fef3c7;
+        }
+        .node-user {
+            background: linear-gradient(135deg, #581c87, #7e22ce);
+            border: 2px solid #a855f7;
+            color: #f3e8ff;
+        }
+        .node-seller {
+            background: linear-gradient(135deg, #831843, #be185d);
+            border: 2px solid #ec4899;
+            color: #fce7f3;
+        }
+        .node-ai {
+            background: linear-gradient(135deg, #0c4a6e, #0369a1);
+            border: 2px solid #38bdf8;
+            color: #e0f2fe;
+        }
+
+        /* ===== SVG ARROWS ===== */
+        .flow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .flow-svg line, .flow-svg path {
+            stroke-width: 2;
+            fill: none;
+        }
+        .arrow-main { stroke: #475569; }
+        .arrow-auth { stroke: #6366f1; }
+        .arrow-browse { stroke: #10b981; }
+        .arrow-purchase { stroke: #f59e0b; }
+        .arrow-user { stroke: #a855f7; }
+        .arrow-seller { stroke: #ec4899; }
+        .arrow-ai { stroke: #38bdf8; }
+
+        /* ===== FLOW LABEL ===== */
+        .flow-label {
+            position: absolute;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            z-index: 3;
+            letter-spacing: 0.3px;
+        }
+        .label-auth { background: #4338ca; color: #e0e7ff; }
+        .label-browse { background: #047857; color: #d1fae5; }
+        .label-purchase { background: #b45309; color: #fef3c7; }
+        .label-user { background: #7e22ce; color: #f3e8ff; }
+        .label-seller { background: #be185d; color: #fce7f3; }
+
+        /* ===== SECTION LABELS ===== */
+        .section-bg {
+            position: absolute;
+            border: 1px dashed;
+            border-radius: 20px;
+            z-index: 0;
+            opacity: 0.15;
+        }
+        .section-label {
+            position: absolute;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        /* ===== RESPONSIVE INFO ===== */
+        .mobile-notice {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        @media (max-width: 1200px) {
+            .mobile-notice { display: block; }
+            body { min-width: 1240px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🚀 NexusMarket – User Flow Diagram</h1>
+        <p>Sơ đồ luồng người dùng – Premium MMO Digital Assets Marketplace</p>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#475569;"></div> Entry Point</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#6366f1;"></div> Authentication</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#10b981;"></div> Browsing / Khám phá</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div> Purchase Flow</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#a855f7;"></div> User Account</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ec4899;"></div> Seller</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#38bdf8;"></div> AI Assistant</div>
+    </div>
+
+    <div class="mobile-notice">⬅ Kéo ngang để xem toàn bộ sơ đồ ➡</div>
+
+    <div class="flow-canvas" id="canvas">
+
+        <!-- ===== SECTION BACKGROUNDS ===== -->
+        <div class="section-bg" style="left:30px; top:10px; width:300px; height:260px; border-color:#6366f1; background:#6366f1;"></div>
+        <div class="section-label" style="left:50px; top:20px; color:#818cf8;">Authentication</div>
+
+        <div class="section-bg" style="left:370px; top:10px; width:460px; height:460px; border-color:#10b981; background:#10b981;"></div>
+        <div class="section-label" style="left:390px; top:20px; color:#34d399;">Browsing & Discovery</div>
+
+        <div class="section-bg" style="left:370px; top:500px; width:460px; height:380px; border-color:#f59e0b; background:#f59e0b;"></div>
+        <div class="section-label" style="left:390px; top:510px; color:#fbbf24;">Purchase Flow</div>
+
+        <div class="section-bg" style="left:870px; top:10px; width:300px; height:540px; border-color:#a855f7; background:#a855f7;"></div>
+        <div class="section-label" style="left:890px; top:20px; color:#c084fc;">User Account</div>
+
+        <div class="section-bg" style="left:870px; top:580px; width:300px; height:300px; border-color:#ec4899; background:#ec4899;"></div>
+        <div class="section-label" style="left:890px; top:590px; color:#f472b6;">Seller Zone</div>
+
+        <!-- ===== NODES ===== -->
+
+        <!-- ENTRY: Landing -->
+        <div class="node node-entry" style="left:420px; top:60px; min-width:200px;" id="n-home">
+            <div class="icon">🏠</div>
+            <div class="title">Trang chủ (Home)</div>
+            <div class="subtitle">Hero banner, danh mục,<br>sản phẩm nổi bật, newsletter</div>
+        </div>
+
+        <!-- AUTH -->
+        <div class="node node-auth" style="left:60px; top:60px;" id="n-login">
+            <div class="icon">🔐</div>
+            <div class="title">Đăng nhập</div>
+            <div class="subtitle">Email + Mật khẩu<br>Quên mật khẩu</div>
+        </div>
+
+        <div class="node node-auth" style="left:60px; top:190px;" id="n-register">
+            <div class="icon">📝</div>
+            <div class="title">Đăng ký</div>
+            <div class="subtitle">Họ tên, Email, MK<br>Xác nhận mật khẩu</div>
+        </div>
+
+        <!-- BROWSE -->
+        <div class="node node-browse" style="left:420px; top:220px; min-width:200px;" id="n-marketplace">
+            <div class="icon">🛍️</div>
+            <div class="title">Chợ (Marketplace)</div>
+            <div class="subtitle">Lọc theo danh mục, tìm kiếm,<br>sắp xếp, grid sản phẩm</div>
+        </div>
+
+        <div class="node node-browse" style="left:680px; top:140px;" id="n-categories">
+            <div class="icon">📂</div>
+            <div class="title">Danh mục</div>
+            <div class="subtitle">Tài khoản · Công cụ<br>Dịch vụ · Phần mềm · AI</div>
+        </div>
+
+        <div class="node node-browse" style="left:420px; top:370px; min-width:200px;" id="n-product">
+            <div class="icon">📦</div>
+            <div class="title">Chi tiết sản phẩm</div>
+            <div class="subtitle">Ảnh, giá, mô tả, seller info,<br>đánh giá, chọn SL, mua</div>
+        </div>
+
+        <!-- PURCHASE FLOW -->
+        <div class="node node-purchase" style="left:390px; top:550px;" id="n-cart">
+            <div class="icon">🛒</div>
+            <div class="title">Giỏ hàng</div>
+            <div class="subtitle">Danh sách SP, SL, giá,<br>xoá, tổng tiền</div>
+        </div>
+
+        <div class="node node-purchase" style="left:610px; top:550px;" id="n-wishlist">
+            <div class="icon">💖</div>
+            <div class="title">Yêu thích</div>
+            <div class="subtitle">Lưu SP quan tâm,<br>thêm vào giỏ</div>
+        </div>
+
+        <div class="node node-purchase" style="left:390px; top:700px; min-width:200px;" id="n-checkout">
+            <div class="icon">💳</div>
+            <div class="title">Thanh toán</div>
+            <div class="subtitle">Thông tin giao hàng,<br>phương thức TT, xác nhận</div>
+        </div>
+
+        <div class="node node-purchase" style="left:620px; top:700px;" id="n-orders">
+            <div class="icon">📋</div>
+            <div class="title">Đơn hàng</div>
+            <div class="subtitle">Lịch sử mua,<br>trạng thái đơn</div>
+        </div>
+
+        <!-- USER ACCOUNT -->
+        <div class="node node-user" style="left:910px; top:60px;" id="n-profile">
+            <div class="icon">👤</div>
+            <div class="title">Hồ sơ cá nhân</div>
+            <div class="subtitle">Avatar, tên, email,<br>bảo mật, cài đặt</div>
+        </div>
+
+        <div class="node node-user" style="left:910px; top:200px;" id="n-purchased">
+            <div class="icon">📥</div>
+            <div class="title">SP đã mua</div>
+            <div class="subtitle">License key, download,<br>hướng dẫn, hỗ trợ</div>
+        </div>
+
+        <div class="node node-user" style="left:910px; top:340px;" id="n-notifications">
+            <div class="icon">🔔</div>
+            <div class="title">Thông báo</div>
+            <div class="subtitle">Cập nhật đơn hàng,<br>khuyến mãi mới</div>
+        </div>
+
+        <!-- SELLER -->
+        <div class="node node-seller" style="left:910px; top:630px; min-width:200px;" id="n-seller">
+            <div class="icon">📊</div>
+            <div class="title">Seller Dashboard</div>
+            <div class="subtitle">Doanh thu, quản lý SP,<br>đơn hàng cần xử lý</div>
+        </div>
+
+        <div class="node node-seller" style="left:910px; top:780px; min-width:200px;" id="n-seller-manage">
+            <div class="icon">⚙️</div>
+            <div class="title">Quản lý sản phẩm</div>
+            <div class="subtitle">Thêm / sửa / xoá<br>sản phẩm đang bán</div>
+        </div>
+
+        <!-- AI ASSISTANT -->
+        <div class="node node-ai" style="left:100px; top:700px; min-width:200px;" id="n-gemini">
+            <div class="icon">🤖</div>
+            <div class="title">Gemini AI Assistant</div>
+            <div class="subtitle">Chatbox hỗ trợ khách hàng<br>Floating button, mọi trang</div>
+        </div>
+
+        <!-- ===== SVG CONNECTIONS ===== -->
+        <svg class="flow-svg" viewBox="0 0 1200 1400" preserveAspectRatio="xMinYMin meet">
+            <defs>
+                <marker id="arr-gray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#475569"/>
+                </marker>
+                <marker id="arr-indigo" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#6366f1"/>
+                </marker>
+                <marker id="arr-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#10b981"/>
+                </marker>
+                <marker id="arr-amber" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#f59e0b"/>
+                </marker>
+                <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#a855f7"/>
+                </marker>
+                <marker id="arr-pink" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#ec4899"/>
+                </marker>
+                <marker id="arr-cyan" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                    <polygon points="0 0, 8 3, 0 6" fill="#38bdf8"/>
+                </marker>
+            </defs>
+
+            <!-- Home → Login (chưa đăng nhập) -->
+            <path d="M420,100 L240,100" class="arrow-auth" marker-end="url(#arr-indigo)" stroke-dasharray="6,4"/>
+
+            <!-- Login ↔ Register -->
+            <line x1="150" y1="155" x2="150" y2="190" class="arrow-auth" marker-end="url(#arr-indigo)"/>
+
+            <!-- Login → Home (đăng nhập thành công) -->
+            <path d="M230,80 Q330,45 420,80" class="arrow-auth" marker-end="url(#arr-indigo)"/>
+
+            <!-- Home → Marketplace -->
+            <line x1="520" y1="155" x2="520" y2="220" class="arrow-green" marker-end="url(#arr-green)"/>
+
+            <!-- Home → Categories -->
+            <path d="M620,100 L700,140" class="arrow-green" marker-end="url(#arr-green)"/>
+
+            <!-- Categories → Marketplace -->
+            <path d="M720,200 Q660,230 620,240" class="arrow-green" marker-end="url(#arr-green)"/>
+
+            <!-- Marketplace → Product Detail -->
+            <line x1="520" y1="310" x2="520" y2="370" class="arrow-green" marker-end="url(#arr-green)"/>
+
+            <!-- Product → Cart (Thêm vào giỏ) -->
+            <path d="M470,460 L460,550" class="arrow-amber" marker-end="url(#arr-amber)"/>
+
+            <!-- Product → Wishlist (Yêu thích) -->
+            <path d="M570,460 L670,550" class="arrow-amber" marker-end="url(#arr-amber)"/>
+
+            <!-- Product → Checkout (Mua ngay) -->
+            <path d="M520,460 Q520,500 490,700" class="arrow-amber" marker-end="url(#arr-amber)" stroke-width="3"/>
+
+            <!-- Cart → Checkout -->
+            <line x1="460" y1="640" x2="470" y2="700" class="arrow-amber" marker-end="url(#arr-amber)"/>
+
+            <!-- Wishlist → Cart -->
+            <path d="M640,600 L530,590" class="arrow-amber" marker-end="url(#arr-amber)" stroke-dasharray="6,4"/>
+
+            <!-- Checkout → Orders -->
+            <path d="M590,750 L640,750" class="arrow-amber" marker-end="url(#arr-amber)"/>
+
+            <!-- Orders → Purchased -->
+            <path d="M720,720 Q830,500 930,290" class="arrow-purple" marker-end="url(#arr-purple)"/>
+
+            <!-- Home → Profile (navbar avatar) -->
+            <path d="M620,90 Q770,60 920,80" class="arrow-purple" marker-end="url(#arr-purple)" stroke-dasharray="6,4"/>
+
+            <!-- Profile → Purchased -->
+            <line x1="1000" y1="155" x2="1000" y2="200" class="arrow-purple" marker-end="url(#arr-purple)"/>
+
+            <!-- Home → Notifications -->
+            <path d="M620,110 Q820,200 940,350" class="arrow-purple" marker-end="url(#arr-purple)" stroke-dasharray="6,4"/>
+
+            <!-- Home → Seller Dashboard -->
+            <path d="M620,120 Q800,400 940,640" class="arrow-pink" marker-end="url(#arr-pink)" stroke-dasharray="6,4"/>
+
+            <!-- Seller Dashboard → Manage Products -->
+            <line x1="1010" y1="720" x2="1010" y2="780" class="arrow-pink" marker-end="url(#arr-pink)"/>
+
+            <!-- AI Assistant (dashed from multiple nodes) -->
+            <path d="M300,750 Q350,600 430,460" class="arrow-ai" marker-end="url(#arr-cyan)" stroke-dasharray="4,4"/>
+            <path d="M250,720 Q250,400 430,260" class="arrow-ai" marker-end="url(#arr-cyan)" stroke-dasharray="4,4"/>
+        </svg>
+
+        <!-- ===== FLOW LABELS ===== -->
+        <div class="flow-label label-auth" style="left:280px; top:78px;">Chưa đăng nhập</div>
+        <div class="flow-label label-auth" style="left:280px; top:50px;">Đăng nhập OK ✓</div>
+        <div class="flow-label label-browse" style="left:530px; top:178px;">Khám phá Chợ</div>
+        <div class="flow-label label-browse" style="left:640px; top:105px;">Chọn danh mục</div>
+        <div class="flow-label label-browse" style="left:530px; top:340px;">Xem chi tiết</div>
+        <div class="flow-label label-purchase" style="left:400px; top:470px;">Thêm giỏ</div>
+        <div class="flow-label label-purchase" style="left:555px; top:470px;">Yêu thích ♡</div>
+        <div class="flow-label label-purchase" style="left:505px; top:510px;">⚡ Mua ngay</div>
+        <div class="flow-label label-purchase" style="left:410px; top:670px;">Thanh toán</div>
+        <div class="flow-label label-purchase" style="left:595px; top:735px;">Xác nhận đơn</div>
+        <div class="flow-label label-user" style="left:760px; top:55px;">Hồ sơ</div>
+        <div class="flow-label label-user" style="left:760px; top:580px;">Xem SP đã mua</div>
+        <div class="flow-label label-seller" style="left:760px; top:455px;">Trở thành Seller</div>
+
+        <!-- ===== FLOW SUMMARY TABLE ===== -->
+        <div style="position: absolute; left: 30px; top: 920px; width: 1140px; z-index: 5;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 28px 32px;">
+                <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; color: #f1f5f9;">
+                    📋 Tóm tắt User Flow – NexusMarket
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 16px;">
+                        <h4 style="font-size: 13px; font-weight: 800; color: #818cf8; margin-bottom: 10px;">🔐 Luồng xác thực</h4>
+                        <ol style="font-size: 12px; color: #94a3b8; padding-left: 18px; line-height: 2;">
+                            <li>Người dùng mới → <strong>Đăng ký</strong> (họ tên, email, MK)</li>
+                            <li>Người dùng cũ → <strong>Đăng nhập</strong> (email + MK)</li>
+                            <li>Quên MK → Reset qua email</li>
+                            <li>Thành công → Chuyển về <strong>Trang chủ</strong></li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 16px;">
+                        <h4 style="font-size: 13px; font-weight: 800; color: #34d399; margin-bottom: 10px;">🛍️ Luồng khám phá</h4>
+                        <ol style="font-size: 12px; color: #94a3b8; padding-left: 18px; line-height: 2;">
+                            <li><strong>Trang chủ</strong> → xem banner, danh mục, SP nổi bật</li>
+                            <li>Chọn danh mục → <strong>Marketplace</strong> (lọc, tìm kiếm)</li>
+                            <li>Click sản phẩm → <strong>Chi tiết SP</strong></li>
+                            <li>Xem ảnh, giá, mô tả, seller info, đánh giá</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 16px;">
+                        <h4 style="font-size: 13px; font-weight: 800; color: #fbbf24; margin-bottom: 10px;">💳 Luồng mua hàng</h4>
+                        <ol style="font-size: 12px; color: #94a3b8; padding-left: 18px; line-height: 2;">
+                            <li>Chi tiết SP → <strong>"Mua ngay"</strong> → Thanh toán</li>
+                            <li>Hoặc: <strong>"Thêm vào giỏ"</strong> → Giỏ hàng → Thanh toán</li>
+                            <li>Hoặc: <strong>"Yêu thích"</strong> → Wishlist → Giỏ hàng</li>
+                            <li>Thanh toán xong → <strong>Đơn hàng</strong> → SP đã mua</li>
+                        </ol>
+                    </div>
+
+                    <div style="background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 16px;">
+                        <h4 style="font-size: 13px; font-weight: 800; color: #c084fc; margin-bottom: 10px;">👤 Luồng tài khoản & Seller</h4>
+                        <ol style="font-size: 12px; color: #94a3b8; padding-left: 18px; line-height: 2;">
+                            <li>Navbar avatar → <strong>Hồ sơ</strong> (chỉnh sửa info, bảo mật)</li>
+                            <li>Navbar 🔔 → <strong>Thông báo</strong> (đơn hàng, KM)</li>
+                            <li>Click "Trở thành Seller" → <strong>Seller Dashboard</strong></li>
+                            <li>Seller: quản lý SP, theo dõi doanh thu, xử lý đơn</li>
+                        </ol>
+                    </div>
+
+                </div>
+
+                <div style="margin-top: 20px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; padding: 16px; text-align: center;">
+                    <h4 style="font-size: 13px; font-weight: 800; color: #38bdf8; margin-bottom: 6px;">🤖 Gemini AI Assistant</h4>
+                    <p style="font-size: 12px; color: #94a3b8;">Floating chatbox hiển thị ở <strong>mọi trang</strong> (trừ Login/Register). Hỗ trợ hỏi đáp, tư vấn sản phẩm, giải đáp thắc mắc thời gian thực.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

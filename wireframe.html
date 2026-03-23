@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusMarket – Wireframe Website</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        .wireframe-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #fff;
+            border: 2px solid #333;
+        }
+
+        /* ===== HEADER / TITLE ===== */
+        .wf-title {
+            background: #fff;
+            border-bottom: 2px solid #333;
+            text-align: center;
+            padding: 18px 20px;
+        }
+        .wf-title h1 { font-size: 22px; font-weight: 800; }
+        .wf-title h2 { font-size: 14px; font-weight: 500; color: #555; margin-top: 2px; }
+
+        /* ===== NAVBAR ===== */
+        .wf-navbar {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #333;
+            padding: 0;
+            background: #fff;
+        }
+        .wf-navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-right: 1px solid #ccc;
+            font-weight: 800;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        .wf-navbar .logo .icon {
+            width: 28px; height: 28px;
+            border: 2px solid #333;
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+        }
+        .wf-navbar .nav-links {
+            display: flex;
+            flex: 1;
+        }
+        .wf-navbar .nav-links a {
+            padding: 14px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            border-right: 1px solid #eee;
+            transition: background 0.15s;
+        }
+        .wf-navbar .nav-links a:hover { background: #f0f0f0; }
+        .wf-navbar .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            margin-left: auto;
+        }
+        .wf-navbar .search-box {
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 12px;
+            width: 160px;
+            color: #999;
+        }
+        .wf-navbar .nav-icon {
+            width: 32px; height: 32px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            position: relative;
+        }
+        .wf-navbar .nav-icon .badge {
+            position: absolute; top: -4px; right: -4px;
+            width: 14px; height: 14px;
+            background: #333;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+        }
+        .wf-navbar .avatar {
+            width: 32px; height: 32px;
+            border: 2px solid #aaa;
+            border-radius: 50%;
+            background: #ddd;
+        }
+
+        /* ===== MAIN BODY ===== */
+        .wf-body {
+            display: flex;
+            border-bottom: 2px solid #333;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .wf-sidebar {
+            width: 190px;
+            min-width: 190px;
+            border-right: 2px solid #333;
+            padding: 16px 0;
+        }
+        .sidebar-group { margin-bottom: 14px; }
+        .sidebar-group-title {
+            font-size: 13px; font-weight: 800;
+            padding: 6px 16px; color: #111;
+        }
+        .sidebar-group ul { list-style: none; }
+        .sidebar-group ul li a {
+            display: block;
+            padding: 6px 16px 6px 22px;
+            font-size: 12px; color: #555;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            border-left: 3px solid transparent;
+            transition: all 0.15s;
+        }
+        .sidebar-group ul li a:hover {
+            border-left-color: #333;
+            background: #fafafa;
+            color: #111;
+        }
+
+        /* ===== CONTENT AREA ===== */
+        .wf-content {
+            flex: 1;
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ===== SECTION CARDS ===== */
+        .wf-section {
+            border: 2px solid #333;
+            padding: 24px 28px;
+            background: #fafafa;
+            position: relative;
+        }
+        .wf-section h3 {
+            font-size: 20px; font-weight: 800;
+            margin-bottom: 10px; color: #111;
+        }
+        .wf-section p {
+            font-size: 13px; line-height: 1.7;
+            color: #555; margin-bottom: 4px;
+        }
+        .annotation {
+            position: absolute; top: 8px; right: 10px;
+            background: #ffe066; color: #333;
+            font-size: 9px; font-weight: 700;
+            padding: 2px 7px; border-radius: 3px;
+            text-transform: uppercase; letter-spacing: 0.4px;
+        }
+
+        /* CTA buttons */
+        .cta-row {
+            margin-top: 10px;
+            display: flex; gap: 10px;
+        }
+        .cta-btn {
+            display: inline-block;
+            padding: 7px 16px;
+            border: 2px solid #333;
+            font-size: 12px; font-weight: 700;
+            color: #222; text-decoration: none;
+            background: #fff; cursor: pointer;
+            transition: all 0.15s;
+        }
+        .cta-btn:hover { background: #333; color: #fff; }
+
+        /* Placeholder dashed box */
+        .placeholder {
+            border: 2px dashed #bbb;
+            height: 56px;
+            display: flex; align-items: center; justify-content: center;
+            color: #aaa; font-size: 12px; font-style: italic;
+            margin-top: 12px; background: #f0f0f0;
+        }
+
+        /* Grids */
+        .grid-5 {
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            gap: 10px; margin-top: 12px;
+        }
+        .grid-4 {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 10px; margin-top: 12px;
+        }
+        .grid-3 {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 10px; margin-top: 12px;
+        }
+        .grid-2 {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 10px; margin-top: 12px;
+        }
+
+        .grid-card {
+            border: 2px dashed #bbb;
+            padding: 16px 10px;
+            text-align: center;
+            font-size: 11px; color: #888; font-weight: 600;
+            background: #f0f0f0;
+        }
+        .grid-card strong {
+            display: block; font-size: 12px;
+            color: #555; margin-bottom: 3px;
+        }
+
+        /* Product card wireframe */
+        .product-card-wf {
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 0;
+        }
+        .product-card-wf .img-placeholder {
+            height: 80px;
+            background: #e8e8e8;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; color: #aaa; font-style: italic;
+            border-bottom: 1px solid #ddd;
+        }
+        .product-card-wf .card-body {
+            padding: 10px;
+        }
+        .product-card-wf .card-body .name {
+            font-size: 12px; font-weight: 700; color: #333;
+        }
+        .product-card-wf .card-body .meta {
+            font-size: 10px; color: #999; margin-top: 2px;
+        }
+        .product-card-wf .card-body .price-row {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-top: 6px;
+        }
+        .product-card-wf .card-body .price {
+            font-size: 13px; font-weight: 800; color: #222;
+        }
+        .product-card-wf .card-body .btn-sm {
+            font-size: 9px; padding: 3px 8px;
+            border: 1px solid #333; background: #fff;
+            font-weight: 700; cursor: pointer;
+        }
+
+        /* ===== FOOTER ===== */
+        .wf-footer {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
+            gap: 20px;
+            padding: 24px 28px;
+            border-bottom: 2px solid #333;
+            background: #fff;
+        }
+        .wf-footer h5 {
+            font-size: 11px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 10px; color: #111;
+        }
+        .wf-footer p, .wf-footer li {
+            font-size: 12px; color: #666; line-height: 1.7;
+        }
+        .wf-footer ul { list-style: none; }
+        .wf-footer ul li { margin-bottom: 4px; }
+        .wf-footer-bottom {
+            text-align: center;
+            padding: 14px;
+            font-size: 12px; color: #888;
+            background: #fff;
+        }
+
+        /* ===== PAGE MAP ===== */
+        .wf-pagemap {
+            border-top: 2px solid #333;
+            padding: 20px 28px;
+            background: #fafafa;
+        }
+        .wf-pagemap h4 {
+            font-size: 14px; font-weight: 800; margin-bottom: 12px;
+        }
+        .pagemap-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .pagemap-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 11px;
+            background: #fff;
+        }
+        .pagemap-item strong {
+            display: block; font-size: 12px;
+            color: #333; margin-bottom: 3px;
+        }
+        .pagemap-item span { color: #888; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .wf-body { flex-direction: column; }
+            .wf-sidebar {
+                width: 100%; border-right: none;
+                border-bottom: 2px solid #333;
+                display: flex; flex-wrap: wrap; padding: 10px; gap: 8px;
+            }
+            .grid-5, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .wf-footer { grid-template-columns: 1fr 1fr; }
+            .pagemap-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .wf-navbar .nav-links { display: none; }
+            .grid-5, .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+            .wf-footer { grid-template-columns: 1fr; }
+            .pagemap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wireframe-container">
+
+    <!-- ==================== TITLE ==================== -->
+    <div class="wf-title">
+        <h1>NexusMarket – Premium MMO Digital Assets</h1>
+        <h2>Wireframe Website – Cấu trúc thông tin &amp; Giao diện khung</h2>
+    </div>
+
+    <!-- ==================== NAVBAR ==================== -->
+    <div class="wf-navbar">
+        <div class="logo">
+            <div class="icon">🚀</div>
+            NexusMarket
+        </div>
+        <div class="nav-links">
+            <a href="#marketplace">Chợ</a>
+            <a href="#tools">Công cụ</a>
+            <a href="#services">Dịch vụ</a>
+            <a href="#software">Phần mềm</a>
+            <a href="#courses">Tài khoản AI</a>
+            <a href="#orders">Đơn hàng</a>
+        </div>
+        <div class="nav-actions">
+            <div class="search-box">🔍 Tìm sản phẩm...</div>
+            <div class="nav-icon">♡<div class="badge">2</div></div>
+            <div class="nav-icon">🛒<div class="badge">3</div></div>
+            <div class="nav-icon">🔔</div>
+            <div class="avatar"></div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN BODY ==================== -->
+    <div class="wf-body">
+
+        <!-- SIDEBAR -->
+        <aside class="wf-sidebar">
+            <div class="sidebar-group">
+                <div class="sidebar-group-title">Trang chính</div>
+                <ul>
+                    <li><a href="#hero">Trang chủ</a></li>
+                    <li><a href="#marketplace">Chợ / Marketplace</a></li>
+                    <li><a href="#">Chi tiết sản phẩm</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <div class="sidebar-group-title">Mua sắm</div>
+                <ul>
+                    <li><a href="#cart">Giỏ hàng</a></li>
+                    <li><a href="#">Thanh toán</a></li>
+                    <li><a href="#wishlist">Yêu thích</a></li>
+                    <li><a href="#orders">Đơn hàng</a></li>
+                    <li><a href="#">Sản phẩm đã mua</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-group">
+                <div class="sidebar-group-title">Tài khoản</div>
+                <ul>
+                    <li><a href="#profile">Hồ sơ cá nhân</a></li>
+                    <li><a href="#login">Đăng nhập</a></li>
+                    <li><a href="#register">Đăng ký</a></li>
+                    <li><a href="#seller">Seller Dashboard</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <main class="wf-content">
+
+            <!-- ===== HERO SECTION ===== -->
+            <section id="hero" class="wf-section" style="padding: 28px;">
+                <span class="annotation">Hero</span>
+                <h3>Hero Section</h3>
+                <p>Tiêu đề: <strong>"Tăng tốc đế chế số"</strong> – Giảm đến 50% cho công cụ tự động, script SEO và tài khoản lâu năm.</p>
+                <p>Ưu đãi mùa xuân 2024. Banner hình ảnh crypto/digital bên phải.</p>
+                <div class="cta-row">
+                    <a class="cta-btn" href="#marketplace">Khám phá Chợ</a>
+                    <a class="cta-btn" href="#seller">Trở thành người bán</a>
+                </div>
+                <div class="placeholder">[ Hero banner image / gradient visual placeholder ]</div>
+            </section>
+
+            <!-- ===== CATEGORIES ===== -->
+            <section id="categories" class="wf-section">
+                <span class="annotation">Categories</span>
+                <h3>Duyệt theo danh mục</h3>
+                <p>5 danh mục chính của NexusMarket, mỗi danh mục có icon + tiêu đề + mô tả phụ.</p>
+                <div class="grid-5">
+                    <div class="grid-card"><strong>👥 Tài khoản</strong>Lâu năm &amp; số lượng lớn</div>
+                    <div class="grid-card"><strong>🔧 Công cụ</strong>SEO &amp; Marketing</div>
+                    <div class="grid-card"><strong>🤝 Dịch vụ</strong>Theo yêu cầu</div>
+                    <div class="grid-card"><strong>💻 Phần mềm</strong>Script tự động</div>
+                    <div class="grid-card"><strong>🎓 Tài khoản AI</strong>Học chiến lược</div>
+                </div>
+            </section>
+
+            <!-- ===== FEATURED PRODUCTS ===== -->
+            <section id="marketplace" class="wf-section">
+                <span class="annotation">Products</span>
+                <h3>Sản phẩm nổi bật</h3>
+                <p>Hiển thị 4 sản phẩm nổi bật dạng lưới. Mỗi card gồm: ảnh, tên, seller, rating, giá, nút "Thêm vào giỏ".</p>
+                <div class="grid-4">
+                    <div class="product-card-wf">
+                        <div class="img-placeholder">[ Ảnh sản phẩm ]</div>
+                        <div class="card-body">
+                            <div class="name">Tài khoản Gmail Aged</div>
+                            <div class="meta">⭐ 4.8 (120 đánh giá) · Seller Pro</div>
+                            <div class="price-row">
+                                <span class="price">250.000₫</span>
+                                <button class="btn-sm">+ Giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-wf">
+                        <div class="img-placeholder">[ Ảnh sản phẩm ]</div>
+                        <div class="card-body">
+                            <div class="name">Tool SEO Auto Backlink</div>
+                            <div class="meta">⭐ 4.5 (85 đánh giá) · Seller Pro</div>
+                            <div class="price-row">
+                                <span class="price">1.200.000₫</span>
+                                <button class="btn-sm">+ Giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-wf">
+                        <div class="img-placeholder">[ Ảnh sản phẩm ]</div>
+                        <div class="card-body">
+                            <div class="name">Dịch vụ Setup VPS</div>
+                            <div class="meta">⭐ 4.9 (200 đánh giá) · Seller Pro</div>
+                            <div class="price-row">
+                                <span class="price">500.000₫</span>
+                                <button class="btn-sm">+ Giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-wf">
+                        <div class="img-placeholder">[ Ảnh sản phẩm ]</div>
+                        <div class="card-body">
+                            <div class="name">Script Auto Marketing</div>
+                            <div class="meta">⭐ 4.7 (64 đánh giá) · Seller</div>
+                            <div class="price-row">
+                                <span class="price">800.000₫</span>
+                                <button class="btn-sm">+ Giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cta-row" style="margin-top:14px; justify-content: flex-end;">
+                    <a class="cta-btn" href="#">Xem tất cả →</a>
+                </div>
+            </section>
+
+            <!-- ===== CART ===== -->
+            <section id="cart" class="wf-section">
+                <span class="annotation">Cart</span>
+                <h3>Giỏ hàng</h3>
+                <p>Danh sách sản phẩm trong giỏ: tên, số lượng (+/-), giá, nút xoá. Tổng tiền ở cuối, nút "Thanh toán".</p>
+                <div class="placeholder">[ Bảng giỏ hàng: Tên SP | Số lượng | Đơn giá | Tổng | Xoá ]</div>
+                <div class="cta-row" style="margin-top:10px; justify-content: flex-end;">
+                    <a class="cta-btn" href="#">Thanh toán →</a>
+                </div>
+            </section>
+
+            <!-- ===== WISHLIST ===== -->
+            <section id="wishlist" class="wf-section">
+                <span class="annotation">Wishlist</span>
+                <h3>Danh sách yêu thích</h3>
+                <p>Grid sản phẩm đã thêm vào wishlist. Nút "Thêm vào giỏ" và "Xoá khỏi yêu thích" cho mỗi item.</p>
+                <div class="placeholder">[ Grid wishlist items – tương tự product cards ]</div>
+            </section>
+
+            <!-- ===== ORDERS ===== -->
+            <section id="orders" class="wf-section">
+                <span class="annotation">Orders</span>
+                <h3>Đơn hàng của tôi</h3>
+                <p>Bảng danh sách đơn hàng: Mã đơn, Tên SP, Ngày, Trạng thái (Hoàn tất / Đang xử lý / Đã huỷ), Giá.</p>
+                <div class="placeholder">[ Bảng đơn hàng: ID | Sản phẩm | Ngày | Trạng thái | Giá ]</div>
+            </section>
+
+            <!-- ===== PROFILE ===== -->
+            <section id="profile" class="wf-section">
+                <span class="annotation">Profile</span>
+                <h3>Hồ sơ cá nhân</h3>
+                <p>Avatar, tên, email, số điện thoại, địa chỉ. Form chỉnh sửa thông tin cá nhân.</p>
+                <div class="grid-2">
+                    <div class="grid-card"><strong>Thông tin cá nhân</strong>Avatar, họ tên, email, SĐT</div>
+                    <div class="grid-card"><strong>Bảo mật</strong>Đổi mật khẩu, xác thực 2 bước</div>
+                </div>
+            </section>
+
+            <!-- ===== LOGIN & REGISTER ===== -->
+            <section id="login" class="wf-section">
+                <span class="annotation">Auth</span>
+                <h3>Đăng nhập / Đăng ký</h3>
+                <p>Trang Login: email + mật khẩu + nút "Đăng nhập" + link "Quên mật khẩu".</p>
+                <p>Trang Register: họ tên, email, mật khẩu, xác nhận mật khẩu, nút "Đăng ký".</p>
+                <div class="grid-2">
+                    <div class="grid-card" style="padding: 20px;">
+                        <strong>Login</strong>
+                        [ Email ]<br>[ Mật khẩu ]<br>[ Đăng nhập ]<br>
+                        <span style="font-size:10px; color:#aaa;">Quên mật khẩu? | Đăng ký mới</span>
+                    </div>
+                    <div class="grid-card" style="padding: 20px;">
+                        <strong>Register</strong>
+                        [ Họ tên ]<br>[ Email ]<br>[ Mật khẩu ]<br>[ Xác nhận MK ]<br>[ Đăng ký ]
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== SELLER DASHBOARD ===== -->
+            <section id="seller" class="wf-section">
+                <span class="annotation">Seller</span>
+                <h3>Seller Dashboard</h3>
+                <p>Bảng điều khiển cho người bán: thống kê doanh thu, danh sách sản phẩm đang bán, đơn hàng cần xử lý.</p>
+                <div class="grid-3">
+                    <div class="grid-card"><strong>📊 Doanh thu</strong>Biểu đồ tổng quan</div>
+                    <div class="grid-card"><strong>📦 Sản phẩm</strong>Quản lý SP đăng bán</div>
+                    <div class="grid-card"><strong>📋 Đơn hàng</strong>Đơn cần xử lý</div>
+                </div>
+            </section>
+
+            <!-- ===== NEWSLETTER / CTA ===== -->
+            <section class="wf-section" style="background: #222; color: #fff;">
+                <span class="annotation" style="background:#ffd700;">CTA</span>
+                <h3 style="color:#fff;">Tham gia 50k+ marketer số</h3>
+                <p style="color:#aaa;">Nhận cập nhật hàng tuần về công cụ mới, chiến lược mới và mã giảm giá.</p>
+                <div class="cta-row" style="margin-top:12px;">
+                    <div class="search-box" style="flex:1; background: rgba(255,255,255,0.1); color: #888; border-color: #555;">Email tốt nhất của bạn</div>
+                    <a class="cta-btn" style="border-color:#fff; color:#fff;">Đăng ký</a>
+                </div>
+            </section>
+
+            <!-- ===== GEMINI ASSISTANT ===== -->
+            <section class="wf-section">
+                <span class="annotation">AI</span>
+                <h3>💬 Gemini AI Assistant</h3>
+                <p>Floating chat button ở góc phải dưới. Mở ra chatbox hỗ trợ khách hàng bằng Gemini AI.</p>
+                <div class="placeholder">[ Floating button 💬 → Mở Chatbox AI ]</div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div class="wf-footer">
+        <div>
+            <h5>🚀 NexusMarket</h5>
+            <p>Chợ MMO hàng đầu thế giới cho tài sản số và công cụ tự động. Đồng hành cùng doanh nhân số từ năm 2018.</p>
+            <p style="margin-top:8px; font-size:11px; color:#aaa;">🌐 Website &nbsp; 📧 Email &nbsp; 📡 RSS</p>
+        </div>
+        <div>
+            <h5>Chợ</h5>
+            <ul>
+                <li>Tài khoản số</li>
+                <li>Tool SaaS</li>
+                <li>Dịch vụ marketing</li>
+                <li>Phần mềm tiếp thị liên kết</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Hỗ trợ</h5>
+            <ul>
+                <li>Trung tâm trợ giúp</li>
+                <li>An toàn &amp; bảo mật</li>
+                <li>Điều khoản dịch vụ</li>
+                <li>Chính sách hoàn tiền</li>
+            </ul>
+        </div>
+        <div>
+            <h5>Trở thành người bán</h5>
+            <p>Bắt đầu bán công cụ và dịch vụ của bạn ngay để tiếp cận hàng nghìn người mua.</p>
+            <div class="cta-row" style="margin-top:8px;">
+                <a class="cta-btn" href="#seller">Đăng ký ngay →</a>
+            </div>
+        </div>
+    </div>
+    <div class="wf-footer-bottom">
+        © 2024 NexusMarket. Bảo lưu mọi quyền. – Wireframe Prototype phục vụ học tập &amp; thiết kế UX/UI
+    </div>
+
+    <!-- ==================== PAGE MAP ==================== -->
+    <div class="wf-pagemap">
+        <h4>📋 Sơ đồ trang (Sitemap)</h4>
+        <div class="pagemap-grid">
+            <div class="pagemap-item"><strong>Home</strong><span>Hero, Categories, Featured, Newsletter</span></div>
+            <div class="pagemap-item"><strong>Marketplace</strong><span>Lọc, sắp xếp, grid sản phẩm</span></div>
+            <div class="pagemap-item"><strong>Product Detail</strong><span>Ảnh, mô tả, giá, đánh giá, CTA</span></div>
+            <div class="pagemap-item"><strong>Cart</strong><span>Danh sách SP, số lượng, tổng tiền</span></div>
+            <div class="pagemap-item"><strong>Checkout</strong><span>Thông tin giao hàng, thanh toán</span></div>
+            <div class="pagemap-item"><strong>Wishlist</strong><span>Grid SP yêu thích</span></div>
+            <div class="pagemap-item"><strong>Orders</strong><span>Lịch sử đơn hàng, trạng thái</span></div>
+            <div class="pagemap-item"><strong>Purchased</strong><span>SP đã mua, license key, download</span></div>
+            <div class="pagemap-item"><strong>Profile</strong><span>Thông tin cá nhân, bảo mật</span></div>
+            <div class="pagemap-item"><strong>Login</strong><span>Email, mật khẩu, đăng nhập</span></div>
+            <div class="pagemap-item"><strong>Register</strong><span>Họ tên, email, MK, đăng ký</span></div>
+            <div class="pagemap-item"><strong>Seller Dashboard</strong><span>Doanh thu, SP, đơn hàng</span></div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

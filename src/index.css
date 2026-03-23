@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #8a24eb;
+  --color-primary-hover: #7a1ed1;
+  --color-bg-light: #f7f6f8;
+  --color-bg-dark: #191121;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-light text-slate-900 font-sans antialiased;
+  }
+
+  button,
+  [role='button'],
+  a,
+  input[type='button'],
+  input[type='submit'],
+  input[type='reset'] {
+    cursor: pointer;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* MMO hover effects - cursor pointer and purple background on hover */
+.mmo-btn {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mmo-btn:hover {
+  background-color: #8a24eb;
+  color: white;
+}
