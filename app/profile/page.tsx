@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Profile } from '../../src/views/Profile';
 
-export default function ProfilePage() {
+function ProfileContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = searchParams?.get('tab') || undefined;
@@ -19,5 +19,13 @@ export default function ProfilePage() {
       onNavigate={handleNavigate}
       defaultTab={tab as any}
     />
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProfileContent />
+    </Suspense>
   );
 }
